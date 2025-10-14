@@ -84,7 +84,7 @@ jobs:
           SUSFS_BRANCH="gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}"
           
           git clone https://github.com/WildKernels/AnyKernel3.git -b "$ANYKERNEL_BRANCH"
-          git clone https://github.com/WildKernels/kernel_patches.git
+          git clone https://github.com/RevealedSoulEven/kernel_patches.git
           git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "$SUSFS_BRANCH"
           
           # Checkout specific commits for SUSFS v1.5.9 if enabled
@@ -177,6 +177,12 @@ jobs:
           cd "$CONFIG/common"
           patch -p1 -F 3 < "../../kernel_patches/gki_ptrace.patch"
 
+      - name: Apply NEWWWW PATTCHHH
+        run: |
+          cd "$CONFIG/common"
+          patch -p1 < "../../kernel_patches/hidenew.patch"
+
+          
       - name: Add KernelSU
         run: |
           cd "$CONFIG"
