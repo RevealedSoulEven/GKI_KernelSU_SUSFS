@@ -83,7 +83,12 @@ jobs:
           ANYKERNEL_BRANCH="gki-2.0"
           SUSFS_BRANCH="gki-${{ inputs.android_version }}-${{ inputs.kernel_version }}"
           
-          git clone https://github.com/WildKernels/AnyKernel3.git -b "$ANYKERNEL_BRANCH"
+          git clone https://github.com/WildKernels/AnyKernel3.git --depth=1
+          cd AnyKernel3
+          git fetch --depth=1 origin 28ad3cbd712782665fa3d22e7b494bf116f0a1a5
+          git checkout 28ad3cbd712782665fa3d22e7b494bf116f0a1a5
+          cd ..
+
           git clone https://github.com/RevealedSoulEven/kernel_patches.git
           git clone https://gitlab.com/simonpunk/susfs4ksu.git -b "$SUSFS_BRANCH"
           
