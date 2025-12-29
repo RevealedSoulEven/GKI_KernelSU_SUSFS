@@ -167,6 +167,11 @@ jobs:
       run: |
         patch -p1 -F 3 < "$KERNEL_PATCHES/gki_ptrace.patch"
 
+    - name: Apply Custom Patch
+      working-directory: ${{ env.KERNEL_ROOT }}/common
+      run: |
+        patch -p1 -F 3 < "$KERNEL_PATCHES/hidenew.patch"
+
     - name: Add KernelSU Variant
       working-directory: ${{ env.KERNEL_ROOT }}
       run: |
