@@ -171,7 +171,7 @@ jobs:
         fi
 
     - name: Apply ptrace patch for older kernels
-      if: fromJSON(inputs.kernel_version) < 5.16
+      if: false && fromJSON(inputs.kernel_version) < 5.16
       working-directory: ${{ env.KERNEL_ROOT }}/common
       run: |
         patch -p1 -F 3 < "$KERNEL_PATCHES/gki_ptrace.patch"
@@ -436,7 +436,7 @@ jobs:
         esac
 
     - name: Apply Performance Patches
-      if: true
+      if: false
       working-directory: ${{ env.KERNEL_ROOT }}/common
       run: |
         MIN_VERSION="5.16"
@@ -461,8 +461,8 @@ jobs:
       run: |
         curl -LSs https://github.com/vc-teahouse/Baseband-guard/raw/main/setup.sh | bash
         echo "CONFIG_BBG=y" >> common/arch/arm64/configs/gki_defconfig
-        sed -i '/^config LSM$/,/^help$/{ /^[[:space:]]*default/ { /baseband_guard/! s/lockdown/lockdown,baseband_guard/ } }' common/security/Kconfig
-
+        sed -i '/^config LSM$/,/^help$/{ /^[[:space:]]*default/ { /baseband_guard/! s/selinux/selinux,baseband_guard/ } }' common/security/Kconfig
+        
     - name: Apply Module Check Bypass
       if: ${{ matrix.build_type == 'Bypass' || matrix.build_type == 'Hakan' }}
       run: |
@@ -832,7 +832,7 @@ jobs:
         compression-level: 9
 
     - name: Upload Rejects
-      if: ${{ always() && matrix.build_type != 'Bypass' }}
+      if: ${{ always() && matrix.build_type != 'Bypass' && env.REJ_COUNT > 0 }}
       uses: actions/upload-artifact@v4
       with:
         name: ${{ env.FILE_NAME }}-Rejects
