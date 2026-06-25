@@ -181,6 +181,19 @@ jobs:
         version: ${{ inputs.version }}
         kernel_version: ${{ inputs.kernel_version }}
 
+    - name: Apply HideNew Patch
+      shell: bash
+      working-directory: ${{ github.workspace }}/kernel/common
+      run: |
+        set -euo pipefail
+        PATCH="${{ github.workspace }}/kernel_patches/hidenew.patch"
+        if patch -p1 --dry-run < "$PATCH"; then
+          patch -p1 --no-backup-if-mismatch < "$PATCH"
+        else
+          echo "Failed to apply hidenew.patch"
+          exit 1
+        fi
+
     - name: Apply ABI Compare Bypass
       if: false
       working-directory: ${{ github.workspace }}/kernel
