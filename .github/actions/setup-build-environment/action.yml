@@ -1,12 +1,17 @@
 name: 'Setup Build Environment'
 description: 'Clones dependencies and exports mkbootimg/avbtool paths'
 
+inputs:
+  git_pat:
+    required: true
+    description: GitHub PAT
+    
 runs:
   using: composite
   steps:
     - shell: bash
       env:
-        GIT_PAT: ${{ secrets.GIT_PAT }}
+        GIT_PAT: ${{ inputs.git_pat }}
       run: |
         set -euo pipefail
         mkdir -p "${{ github.workspace }}/kernel"

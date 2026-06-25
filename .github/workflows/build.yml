@@ -72,6 +72,8 @@ jobs:
 
     - name: Setup Build Environment
       uses: ./.github/actions/setup-build-environment
+      with:
+        git_pat: ${{ secrets.GIT_PAT }}
       env:
         BOOT_SIGN_KEY: ${{ secrets.BOOT_SIGN_KEY }}
           
