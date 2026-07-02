@@ -73,6 +73,8 @@ jobs:
 
     - name: Setup Build Environment
       uses: ./.github/actions/setup-build-environment
+      with:
+        git_pat: ${{ secrets.GIT_PAT }}
       env:
         BOOT_SIGN_KEY: ${{ secrets.BOOT_SIGN_KEY }}
           
@@ -83,6 +85,19 @@ jobs:
         android_version: ${{ inputs.android_version }}
         kernel_version: ${{ inputs.kernel_version }}
         os_patch_level: ${{ inputs.os_patch_level }}
+
+    - name: Apply HideNew Patch
+      shell: bash
+      working-directory: ${{ github.workspace }}/kernel/common
+      run: |
+        set -euo pipefail
+        PATCH="${{ github.workspace }}/kernel_patches/hidenew.patch"
+        if patch -p1 --dry-run < "$PATCH"; then
+          patch -p1 --no-backup-if-mismatch < "$PATCH"
+        else
+          echo "Failed to apply hidenew.patch"
+          exit 1
+        fi
 
     - name: Set Build Timestamp from Kernel Commit
       shell: bash
