@@ -10,6 +10,8 @@ runs:
   using: composite
   steps:
     - shell: bash
+      env:
+        GIT_PAT: ${{ inputs.git_pat }}
       run: |
         set -euo pipefail
         mkdir -p "${{ github.workspace }}/kernel"
